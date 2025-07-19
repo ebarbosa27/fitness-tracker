@@ -1,8 +1,11 @@
 import useQuery from "../api/useQuery";
+import AddActivity from "./AddActivity";
 import DeleteActivity from "./DeleteActivity";
+import { useAuth } from "../auth/AuthContext";
 
 export default function ActivitiesPage() {
   const activities = useQuery("/activities", "allActivities");
+  const { token } = useAuth();
 
   if (activities.error) {
     return (
@@ -24,14 +27,18 @@ export default function ActivitiesPage() {
     <>
       <h1>Activities</h1>
       {activities.data ? (
-        <ul>
-          {activities.data.map((activity, idx) => (
-            <li key={idx}>
-              <p>{activity.name}</p>
-              <DeleteActivity activity={activity} />
-            </li>
-          ))}
-        </ul>
+        <div>
+          <ul>
+            {activities.data.map((activity, idx) => (
+              <li key={idx}>
+                <p>{activity.name}</p>
+                <DeleteActivity activity={activity} />
+              </li>
+            ))}
+          </ul>
+          <br />
+          {token ? <AddActivity /> : ""}
+        </div>
       ) : (
         <p>Imagine all the activities!</p>
       )}
