@@ -1,11 +1,19 @@
 import useMutation from "../api/useMutation";
+import { useAuth } from "../auth/AuthContext";
 
 export default function DeleteActivity({ activity }) {
-  const deleteActivity = useMutation("DELETE", `/activity/${activity.id}`, ["allActivities"]);
+  const { userId } = useAuth();
+  const removeReq = useMutation("DELETE", `/activities/${activity.id}`, ["allActivities"]);
 
   function handleDelete() {
-    deleteActivity.mutate("");
+    removeReq.mutate();
   }
 
-  return <button onClick={handleDelete}>Delete</button>;
+  if (userId === activity.creatorId) {
+    return (
+      <div>
+        <button onClick={handleDelete}>Delete</button>
+      </div>
+    );
+  }
 }
