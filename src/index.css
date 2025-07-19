@@ -40,4 +40,16 @@ a:hover {
 ul,
 ol {
   padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+ul li {
+  display: flex;
+  justify-content: space-between;
+}
+
+ul li button {
+  padding: 0.05rem 0.5rem;
 }

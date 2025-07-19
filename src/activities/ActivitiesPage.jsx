@@ -1,10 +1,10 @@
-import { useState } from "react";
 import useQuery from "../api/useQuery";
+import DeleteActivity from "./DeleteActivity";
 
 export default function ActivitiesPage() {
-  const { data, loading, error } = useQuery("/activities", "allActivities");
+  const activities = useQuery("/activities", "allActivities");
 
-  if (error) {
+  if (activities.error) {
     return (
       <>
         <h1>Error fetching activities</h1>
@@ -12,7 +12,7 @@ export default function ActivitiesPage() {
     );
   }
 
-  if (loading) {
+  if (activities.loading) {
     return (
       <>
         <h1>Loading activities...</h1>
@@ -23,10 +23,13 @@ export default function ActivitiesPage() {
   return (
     <>
       <h1>Activities</h1>
-      {data ? (
+      {activities.data ? (
         <ul>
-          {data.map((activity, idx) => (
-            <li key={idx}>{activity.name}</li>
+          {activities.data.map((activity, idx) => (
+            <li key={idx}>
+              <p>{activity.name}</p>
+              <DeleteActivity activity={activity} />
+            </li>
           ))}
         </ul>
       ) : (
